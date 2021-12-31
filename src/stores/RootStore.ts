@@ -1,15 +1,12 @@
 import { Instance, types } from "mobx-state-tree";
 import { createContext, useContext } from "react";
 import { CheckoutStore } from "./domains/CheckoutStore";
-import { ProductStore } from "./domains/ProductStore";
 
 const RootStore = types.model({
-  productStore: ProductStore,
   checkoutStore: CheckoutStore,
 });
 
 let initialState = RootStore.create({
-  productStore: {},
   checkoutStore: {
     items: [],
   },

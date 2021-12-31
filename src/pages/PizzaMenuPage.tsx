@@ -1,45 +1,13 @@
-import { Checkout } from "logic/Checkout";
-import { CampaignEnum } from "logic/enums/CampaignEnum";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
-import { SizeEnum } from "services/enums/SizeEnum";
 import { useStores } from "stores/RootStore";
 
 const ProductsPage = observer(() => {
-  const { productStore } = useStores();
+  const { checkoutStore } = useStores();
 
   useEffect(() => {
-    productStore.getProducts();
-    const co = new Checkout([
-      {
-        customerId: "Microsoft",
-        campaign: CampaignEnum.GetXForYDeal,
-        campaignParams: {
-          discountedSize: SizeEnum.Small,
-          xQuantity: 3,
-          yQuantity: 2,
-        },
-      },
-      {
-        customerId: "Amazon",
-        campaign: CampaignEnum.PriceDrops,
-        campaignParams: {
-          discountedSize: SizeEnum.Large,
-          discountPrice: 19.99,
-        },
-      },
-      {
-        customerId: "Facebook",
-        campaign: CampaignEnum.GetXForYDeal,
-        campaignParams: {
-          discountedSize: SizeEnum.Medium,
-          xQuantity: 5,
-          yQuantity: 4,
-        },
-      },
-    ]);
-    console.log(co.total());
-  }, [productStore]);
+    checkoutStore.getMenu();
+  }, [checkoutStore]);
 
   return (
     <div
@@ -61,13 +29,13 @@ const ProductsPage = observer(() => {
             <p className="lg:text-4xl text-3xl font-black leading-10 text-gray-800 dark:text-white pt-3">
               Menu
             </p>
-            {productStore &&
-              productStore.products.map((product) => (
+            {checkoutStore &&
+              checkoutStore.items.map((item) => (
                 <div className="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50">
                   <div className="md:w-4/12 2xl:w-1/4 w-full">
                     <img
-                      src={product.image}
-                      alt={product.name}
+                      src={item.product.image}
+                      alt={item.product.name}
                       className="h-full object-center object-cover md:block"
                     />
                   </div>
@@ -77,11 +45,11 @@ const ProductsPage = observer(() => {
                     </p>
                     <div className="flex items-center justify-between w-full pt-1">
                       <p className="text-base font-black leading-none text-gray-800 dark:text-white">
-                        {product.name}
+                        {item.product.name}
                       </p>
                     </div>
                     <p className="text-xs leading-3 text-gray-600 dark:text-white pt-2">
-                      {product.description}
+                      {item.product.description}
                     </p>
                     <div className="flex items-center justify-between pt-5">
                       <div className="flex itemms-center">
@@ -89,6 +57,9 @@ const ProductsPage = observer(() => {
                           <button
                             data-action="decrement"
                             className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
+                            onClick={() =>
+                              checkoutStore.minusFromCart(item.product)
+                            }
                           >
                             <span className="m-auto text-2xl font-thin">−</span>
                           </button>
@@ -96,18 +67,21 @@ const ProductsPage = observer(() => {
                             type="number"
                             className="focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
                             name="custom-input-number"
-                            value="0"
+                            value={item.quantity}
                           ></input>
                           <button
                             data-action="increment"
                             className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
+                            onClick={() =>
+                              checkoutStore.addToCart(item.product)
+                            }
                           >
                             <span className="m-auto text-2xl font-thin">+</span>
                           </button>
                         </div>
                       </div>
                       <p className="text-base font-black leading-none text-gray-800 dark:text-white">
-                        {`${product.currency} ${product.retailPrice}`}
+                        {`${item.product.currency} ${item.product.retailPrice}`}
                       </p>
                     </div>
                   </div>
@@ -125,23 +99,23 @@ const ProductsPage = observer(() => {
                     Subtotal
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    $9,000
+                    {checkoutStore.totalAmount()}
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-5">
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    Shipping
+                    Total Discount
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    $30
+                    {checkoutStore.totalAmount()}
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-5">
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    Tax
+                    Discount for customer
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    $35
+                    Microsoft
                   </p>
                 </div>
               </div>
@@ -151,7 +125,7 @@ const ProductsPage = observer(() => {
                     Total
                   </p>
                   <p className="text-2xl font-bold leading-normal text-right text-gray-800 dark:text-white">
-                    $10,240
+                    {checkoutStore.finalAmount()}
                   </p>
                 </div>
                 <button
