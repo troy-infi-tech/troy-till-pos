@@ -1,3 +1,4 @@
+import { Select } from "components/Select";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { useStores } from "stores/RootStore";
@@ -31,7 +32,10 @@ const ProductsPage = observer(() => {
             </p>
             {checkoutStore &&
               checkoutStore.items.map((item) => (
-                <div className="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50">
+                <div
+                  key={item.id}
+                  className="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50"
+                >
                   <div className="md:w-4/12 2xl:w-1/4 w-full">
                     <img
                       src={item.product.image}
@@ -67,6 +71,7 @@ const ProductsPage = observer(() => {
                             type="number"
                             className="focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
                             name="custom-input-number"
+                            onChange={() => {}}
                             value={item.quantity}
                           ></input>
                           <button
@@ -99,7 +104,7 @@ const ProductsPage = observer(() => {
                     Subtotal
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    {checkoutStore.totalAmount()}
+                    {checkoutStore.totalAmount().toFixed(2)}
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-5">
@@ -107,7 +112,9 @@ const ProductsPage = observer(() => {
                     Total Discount
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    {checkoutStore.totalAmount()}
+                    {(
+                      checkoutStore.finalAmount() - checkoutStore.totalAmount()
+                    ).toFixed(2)}
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-5">
@@ -115,17 +122,28 @@ const ProductsPage = observer(() => {
                     Discount for customer
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    Microsoft
+                    {checkoutStore.currentCustomer?.name}
                   </p>
                 </div>
               </div>
               <div>
+                {checkoutStore.customers && (
+                  <Select
+                    label="Select customer"
+                    options={checkoutStore.customers as any}
+                    selectedOption={
+                      (checkoutStore.currentCustomer as any) ||
+                      checkoutStore.customers[0]
+                    }
+                    onChange={checkoutStore.setCurrentCustomer}
+                  ></Select>
+                )}
                 <div className="flex items-center pb-6 justify-between lg:pt-5 pt-20">
                   <p className="text-2xl leading-normal text-gray-800 dark:text-white">
                     Total
                   </p>
                   <p className="text-2xl font-bold leading-normal text-right text-gray-800 dark:text-white">
-                    {checkoutStore.finalAmount()}
+                    {checkoutStore.finalAmount().toFixed(2)}
                   </p>
                 </div>
                 <button

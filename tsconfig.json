@@ -21,6 +21,6 @@
     "jsx": "react-jsx",
     "baseUrl": "./src"
   },
-  "include": ["react-app-env.d.ts", "**/*.ts", "**/*.tsx", "@types"],
+  "include": ["react-app-env.d.ts", "**/*.ts", "**/*.tsx", "@types", "__tests__/Checkout.test.js"],
   "exclude": ["node_modules"]
 }

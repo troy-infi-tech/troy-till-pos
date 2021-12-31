@@ -1,0 +1,28 @@
+[
+  {
+    "customerId": "Microsoft",
+    "campaign": "GetXForYDeal",
+    "campaignParams": {
+      "discountedSize": "Small",
+      "xQuantity": 3,
+      "yQuantity": 2
+    }
+  },
+  {
+    "customerId": "Amazon",
+    "campaign": "PriceDrops",
+    "campaignParams": {
+      "discountedSize": "Large",
+      "discountPrice": 19.99
+    }
+  },
+  {
+    "customerId": "Facebook",
+    "campaign": "GetXForYDeal",
+    "campaignParams": {
+      "discountedSize": "Medium",
+      "xQuantity": 5,
+      "yQuantity": 4
+    }
+  }
+]

@@ -46,7 +46,7 @@ export class Checkout {
       }
     });
 
-    return total;
+    return Math.round((total + Number.EPSILON) * 100) / 100;
   }
 
   private groupItemsBySize(): {

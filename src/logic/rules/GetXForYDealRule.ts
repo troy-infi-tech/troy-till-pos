@@ -17,11 +17,14 @@ export class GetXForYDealRule implements AbstractRule {
     const quantity = items
       .map((item) => item.quantity)
       .reduce((total, current) => total + current);
-    const discountedTime = quantity / xQuantity;
+
+    if (quantity < xQuantity) {
+      return quantity * items[0].product.retailPrice;
+    }
+
+    const discountedTime = Math.floor(quantity / xQuantity);
     const discountCount = discountedTime * yQuantity;
     const nonDiscountCount = quantity % xQuantity;
-
-    console.log("count", `${discountCount} + ${nonDiscountCount}`);
 
     finalPrice +=
       (discountCount + nonDiscountCount) * items[0].product.retailPrice;

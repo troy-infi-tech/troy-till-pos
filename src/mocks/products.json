@@ -1,0 +1,29 @@
+[
+  {
+    "id": "a5664826-57de-4181-ae14-96d395b963cc",
+    "name": "Small Pizza",
+    "description": "10\" pizza for one person",
+    "image": "https://doiduavang.vn/wp-content/uploads/2021/01/pizza-nhan-hai-san-doi-dua-vang-scaled.jpg",
+    "size": "Small",
+    "retailPrice": 11.99,
+    "currency": "USD"
+  },
+  {
+    "id": "d9fd16e0-53c1-4b25-8459-93c61eff290b",
+    "name": "Medium Pizza",
+    "description": "12\" pizza for two person",
+    "image": "https://doiduavang.vn/wp-content/uploads/2021/01/pizza-nhan-hai-san-doi-dua-vang-scaled.jpg",
+    "size": "Medium",
+    "retailPrice": 15.99,
+    "currency": "USD"
+  },
+  {
+    "id": "8ae5ee38-f0c6-4492-beec-8e58897abbdd",
+    "name": "Large Pizza",
+    "description": "15\" pizza for four person",
+    "image": "https://doiduavang.vn/wp-content/uploads/2021/01/pizza-nhan-hai-san-doi-dua-vang-scaled.jpg",
+    "size": "Large",
+    "retailPrice": 21.99,
+    "currency": "USD"
+  }
+]

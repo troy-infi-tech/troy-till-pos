@@ -1,10 +1,16 @@
 import { Checkout } from "logic/Checkout";
 import { cast, flow, types } from "mobx-state-tree";
+import { CustomerModel } from "models/CustomerModel";
 import { PricingRule } from "models/PricingRule";
 import { ProductModel } from "models/ProductModel";
-import { getPricingRules, getProducts } from "services/data/DataService";
+import {
+  getCustomers,
+  getPricingRules,
+  getProducts,
+} from "services/data/DataService";
 import { StatusEnum } from "stores/enums/StatusEnum";
 import { withStatus } from "stores/extensions/with-status";
+import { CustomerStoreModel } from "stores/models/CustomerStoreModel";
 import { ItemStoreModel } from "stores/models/ItemStoreModel";
 import { ProductStoreModel } from "stores/models/ProductStoreModel";
 import { v4 as uuidV4 } from "uuid";
@@ -15,6 +21,8 @@ export const CheckoutStore = types
   .props({
     products: types.array(ProductStoreModel),
     items: types.array(ItemStoreModel),
+    customers: types.array(CustomerStoreModel),
+    currentCustomer: types.maybeNull(CustomerStoreModel),
     pricingRules: types.frozen([]),
   })
   .views((self) => ({
@@ -32,7 +40,12 @@ export const CheckoutStore = types
 
       const checkoutProcess = new Checkout(self.pricingRules);
       self.items.forEach((item) => {
-        checkoutProcess.add({ ...item, customerId: "Microsoft" });
+        checkoutProcess.add({
+          ...item,
+          customerId: self.currentCustomer
+            ? self.currentCustomer.id
+            : "Default",
+        });
       });
       return checkoutProcess.total();
     },
@@ -42,7 +55,13 @@ export const CheckoutStore = types
       self.products = cast(products);
     },
     setPricingRules(pricingRules: any) {
-      self.pricingRules = pricingRules;
+      self.pricingRules = cast(pricingRules);
+    },
+    setCustomers(customers: any) {
+      self.customers = cast(customers);
+    },
+    setCurrentCustomer(customer: any) {
+      self.currentCustomer = { ...customer };
     },
     addToCart(product: any) {
       try {
@@ -78,9 +97,12 @@ export const CheckoutStore = types
       try {
         const products: ProductModel[] = yield getProducts();
         const pricingRules: PricingRule[] = yield getPricingRules();
+        const customers: CustomerModel[] = yield getCustomers();
 
         self.setProducts(products);
         self.setPricingRules(pricingRules);
+        self.setCustomers(customers);
+        self.setCurrentCustomer(customers[0]);
 
         products.forEach((product) => {
           self.addToCart(product);
