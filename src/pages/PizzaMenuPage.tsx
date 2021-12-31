@@ -104,7 +104,7 @@ const ProductsPage = observer(() => {
                     Subtotal
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
-                    {checkoutStore.totalAmount().toFixed(2)}
+                    USD {checkoutStore.totalAmount().toFixed(2)}
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-5">
@@ -112,6 +112,7 @@ const ProductsPage = observer(() => {
                     Total Discount
                   </p>
                   <p className="text-base leading-none text-gray-800 dark:text-white">
+                    USD{" "}
                     {(
                       checkoutStore.finalAmount() - checkoutStore.totalAmount()
                     ).toFixed(2)}
@@ -143,7 +144,7 @@ const ProductsPage = observer(() => {
                     Total
                   </p>
                   <p className="text-2xl font-bold leading-normal text-right text-gray-800 dark:text-white">
-                    {checkoutStore.finalAmount().toFixed(2)}
+                    USD {checkoutStore.finalAmount().toFixed(2)}
                   </p>
                 </div>
                 <button
