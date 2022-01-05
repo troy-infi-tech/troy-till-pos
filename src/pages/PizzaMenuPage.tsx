@@ -33,6 +33,7 @@ const ProductsPage = observer(() => {
             {checkoutStore &&
               checkoutStore.items.map((item) => (
                 <div
+                  id={item.product.id}
                   key={item.id}
                   className="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50"
                 >
@@ -59,6 +60,7 @@ const ProductsPage = observer(() => {
                       <div className="flex itemms-center">
                         <div className="flex flex-row h-10 w-32 rounded-lg relative bg-transparent mt-1">
                           <button
+                            id={`minus-${item.product.id}`}
                             data-action="decrement"
                             className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
                             onClick={() =>
@@ -68,6 +70,7 @@ const ProductsPage = observer(() => {
                             <span className="m-auto text-2xl font-thin">−</span>
                           </button>
                           <input
+                            id={`value-${item.product.id}`}
                             type="number"
                             className="focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
                             name="custom-input-number"
@@ -75,6 +78,7 @@ const ProductsPage = observer(() => {
                             value={item.quantity}
                           ></input>
                           <button
+                            id={`add-${item.product.id}`}
                             data-action="increment"
                             className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
                             onClick={() =>
@@ -85,7 +89,10 @@ const ProductsPage = observer(() => {
                           </button>
                         </div>
                       </div>
-                      <p className="text-base font-black leading-none text-gray-800 dark:text-white">
+                      <p
+                        id={`price-for-${item.product.id}`}
+                        className="text-base font-black leading-none text-gray-800 dark:text-white"
+                      >
                         {`${item.product.currency} ${item.product.retailPrice}`}
                       </p>
                     </div>
